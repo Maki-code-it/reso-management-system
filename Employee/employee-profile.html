@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Employee | Resource Management System</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>RMS - EMPLOYEE</h2>
+                <p style="color: rgba(255, 255, 255, 0.7); font-size: 14px; margin-top: 5px;">Anna Cruz</p>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="project-history.html" class="menu-item">
+                    <i class="fas fa-history"></i>
+                    <span>Project History</span>
+                </a>
+                <a href="profile.html" class="menu-item active">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1>Profile Settings</h1>
+                <p class="breadcrumb">Home / Profile</p>
+            </div>
+
+            <div class="profile-grid">
+                <!-- Profile Sidebar -->
+                <div class="profile-sidebar">
+                    <div class="profile-avatar-section">
+                        <div class="profile-avatar-large" id="profileAvatarLarge">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="profile-name">
+                            <h2 id="profileName">Anna Cruz</h2>
+                            <p id="profilePosition">Senior Software Developer</p>
+                        </div>
+                        <div class="status-indicator available" id="statusIndicator">
+                            <span class="status-dot"></span>
+                            <span id="statusText">Available</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary w-100" onclick="document.getElementById('profilePictureInput').click()">
+                        <i class="fas fa-camera"></i>
+                        Change Photo
+                    </button>
+                    <input type="file" id="profilePictureInput" accept="image/*" style="display: none;">
+
+                    <div class="info-section">
+                        <div class="info-item">
+                            <div class="info-label">Employee ID</div>
+                            <div class="info-value" id="employeeId">001</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Department</div>
+                            <div class="info-value" id="department">IT Department</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Join Date</div>
+                            <div class="info-value" id="joinDate">January 15, 2020</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Available Hours/Week</div>
+                            <div class="info-value"><span id="availableHours">40</span> hours</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Main Content -->
+                <div>
+                    <!-- Availability Status -->
+                    <div class="content-card">
+                        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 15px;">Availability Status</h3>
+                        <form id="availabilityForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Current Status</label>
+                                    <select class="form-control" id="availabilityStatus" name="availability_status">
+                                        <option value="Available">Available for New Projects</option>
+                                        <option value="Busy">Busy</option>
+                                        <option value="On Leave">On Leave</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Available Hours/Week</label>
+                                    <input type="number" class="form-control" id="hoursPerWeek" name="hours_per_week" min="0" max="80" value="40">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                Update Availability
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Personal Information -->
+                    <div class="content-card">
+                        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 15px;">Personal Information</h3>
+                        <form id="personalInfoForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="fullName" name="full_name" value="Anna Cruz" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Position</label>
+                                    <input type="text" class="form-control" id="position" name="position" value="Senior Software Developer" disabled>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Employee ID</label>
+                                    <input type="text" class="form-control" value="001" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Department</label>
+                                    <input type="text" class="form-control" value="IT Department" disabled>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Skills Information -->
+                    <div class="content-card">
+                        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 15px;">Skills Information</h3>
+                        <form id="skillsForm">
+                            <div class="form-group">
+                                <label class="form-label">Skills</label>
+                                <div class="skills-container" id="skillsContainer">
+                                    <!-- Skills will be populated here -->
+                                </div>
+                                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                    <input type="text" class="form-control" id="newSkillInput" placeholder="Add new skill..." style="flex: 1;">
+                                    <button type="button" class="btn btn-secondary" id="addSkillBtn">
+                                        <i class="fas fa-plus"></i> Add
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Certifications</label>
+                                <textarea class="form-control" id="certifications" name="certifications" rows="4" placeholder="List your certifications..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Project Experience</label>
+                                <textarea class="form-control" id="projectExperience" name="project_experience" rows="4" placeholder="Describe your project experience..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Roles/Specialization</label>
+                                <input type="text" class="form-control" id="roles" name="roles" placeholder="e.g., Full Stack Developer, Team Lead">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                Save Skills Information
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Upload Certificate -->
+                    <div class="content-card" id="upload-certificate">
+                        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 15px;">Upload Certificate</h3>
+                        <p style="color: var(--dark-gray); font-size: 14px; margin-bottom: 20px;">
+                            Upload your new certificate. Our system will automatically extract the information using OCR and NLP technology.
+                        </p>
+                        
+                        <div class="upload-area" id="uploadArea">
+                            <input type="file" id="certificateInput" accept="image/*,.pdf" style="display: none;">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="upload-text">
+                                <h4>Click to upload or drag and drop</h4>
+                                <p>Supported formats: JPG, PNG, PDF (Max 5MB)</p>
+                            </div>
+                        </div>
+
+                        <div id="uploadPreview" style="display: none; margin-top: 20px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 15px; background: var(--light-gray); border-radius: var(--border-radius);">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <i class="fas fa-file-image" style="font-size: 32px; color: var(--accent-blue);"></i>
+                                    <div>
+                                        <div style="font-weight: 500;" id="fileName">certificate.jpg</div>
+                                        <div style="font-size: 13px; color: var(--dark-gray);" id="fileSize">2.5 MB</div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-danger btn-sm" id="removeFileBtn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <button type="button" class="btn btn-success mt-2" id="uploadCertificateBtn">
+                                <i class="fas fa-upload"></i>
+                                Upload Certificate
+                            </button>
+                        </div>
+
+                        <div id="processingStatus" style="display: none; margin-top: 20px;">
+                            <div style="text-align: center; padding: 30px;">
+                                <div class="loading" style="display: inline-block; width: 40px; height: 40px; border-width: 4px; border-color: var(--accent-blue); border-top-color: var(--accent-blue);"></div>
+                                <p style="margin-top: 15px; color: var(--dark-gray);">Processing certificate with OCR and NLP...</p>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 20px; padding: 15px; background: rgba(74, 144, 226, 0.05); border-radius: var(--border-radius); border-left: 4px solid var(--accent-blue);">
+                            <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--primary-black);">
+                                <i class="fas fa-info-circle"></i> How it works
+                            </h4>
+                            <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: var(--dark-gray);">
+                                <li>Upload a clear image or PDF of your certificate</li>
+                                <li>Our OCR technology will read the text from the document</li>
+                                <li>NLP will extract relevant information (skills, certifications, courses)</li>
+                                <li>Information will be automatically added to your profile</li>
+                                <li>HR will be notified of your new certification</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Recent Certificates -->
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3 class="card-title" style="font-size: 18px;">Recent Certificates</h3>
+                        </div>
+                        <div id="recentCertificates">
+                            <!-- Will be populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Mock data
+        const mockProfileData = {
+            name: "Anna Cruz",
+            position: "Senior Software Developer",
+            employeeId: "001",
+            department: "IT Department",
+            joinDate: "2020-01-15",
+            availabilityStatus: "Available",
+            availableHours: 40,
+            skills: ["JavaScript", "PHP", "Python", "React", "Node.js", "SQL", "MongoDB"],
+            certifications: "AWS Certified Solutions Architect\nGoogle Cloud Professional\nMicrosoft Azure Fundamentals",
+            projectExperience: "5+ years of full-stack development experience with expertise in building scalable web applications.",
+            roles: "Full Stack Developer, Team Lead"
+        };
+
+        const mockRecentCertificates = [
+            {
+                id: 1,
+                name: "AWS Certified Solutions Architect",
+                uploadDate: "2025-01-15",
+                status: "Verified",
+                extractedSkills: ["AWS", "Cloud Architecture", "EC2", "S3"]
+            },
+            {
+                id: 2,
+                name: "React Advanced Certification",
+                uploadDate: "2024-12-10",
+                status: "Verified",
+                extractedSkills: ["React", "Redux", "Hooks", "Performance Optimization"]
+            }
+        ];
+
+        let currentSkills = [...mockProfileData.skills];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeProfile();
+            setupEventListeners();
+        });
+
+        function initializeProfile() {
+            // Load profile data
+            document.getElementById('profileName').textContent = mockProfileData.name;
+            document.getElementById('profilePosition').textContent = mockProfileData.position;
+            document.getElementById('employeeId').textContent = mockProfileData.employeeId;
+            document.getElementById('department').textContent = mockProfileData.department;
+            document.getElementById('joinDate').textContent = formatDate(mockProfileData.joinDate);
+            document.getElementById('availableHours').textContent = mockProfileData.availableHours;
+            
+            // Set form values
+            document.getElementById('availabilityStatus').value = mockProfileData.availabilityStatus;
+            document.getElementById('hoursPerWeek').value = mockProfileData.availableHours;
+            document.getElementById('fullName').value = mockProfileData.name;
+            document.getElementById('position').value = mockProfileData.position;
+            document.getElementById('certifications').value = mockProfileData.certifications;
+            document.getElementById('projectExperience').value = mockProfileData.projectExperience;
+            document.getElementById('roles').value = mockProfileData.roles;
+            
+            // Update status indicator
+            updateStatusIndicator(mockProfileData.availabilityStatus);
+            
+            // Load skills
+            renderSkills();
+            
+            // Load recent certificates
+            renderRecentCertificates();
+            
+            // Set avatar initials
+            const initials = mockProfileData.name.split(' ').map(n => n[0]).join('');
+            document.getElementById('profileAvatarLarge').innerHTML = `<div style="font-size: 64px; font-weight: 600; color: var(--primary-black);">${initials}</div>`;
+        }
+
+        function renderSkills() {
+            const container = document.getElementById('skillsContainer');
+            container.innerHTML = currentSkills.map(skill => `
+                <span class="skill-tag editable">
+                    ${skill}
+                    <span class="remove-skill" onclick="removeSkill('${skill}')">×</span>
+                </span>
+            `).join('');
+        }
+
+        function renderRecentCertificates() {
+            const container = document.getElementById('recentCertificates');
+            
+            if (mockRecentCertificates.length === 0) {
+                container.innerHTML = '<p style="color: var(--dark-gray); margin: 0;">No certificates uploaded yet.</p>';
+                return;
+            }
+            
+            container.innerHTML = mockRecentCertificates.map(cert => `
+                <div style="padding: 15px; border-bottom: 1px solid var(--light-gray);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                        <div>
+                            <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">${cert.name}</h4>
+                            <p style="font-size: 13px; color: var(--dark-gray); margin: 0;">Uploaded: ${formatDate(cert.uploadDate)}</p>
+                        </div>
+                        <span class="badge badge-success">${cert.status}</span>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <strong style="font-size: 12px; color: var(--dark-gray);">Extracted Skills:</strong>
+                        ${cert.extractedSkills.map(skill => `<span class="badge badge-info" style="margin: 2px;">${skill}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStatusIndicator(status) {
+            const indicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            
+            indicator.classList.remove('available', 'busy', 'unavailable');
+            statusText.textContent = status;
+            
+            if (status === 'Available') {
+                indicator.classList.add('available');
+            } else if (status === 'Busy') {
+                indicator.classList.add('busy');
+            } else {
+                indicator.classList.add('unavailable');
+            }
+        }
+
+        function removeSkill(skill) {
+            currentSkills = currentSkills.filter(s => s !== skill);
+            renderSkills();
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                          'July', 'August', 'September', 'October', 'November', 'December'];
+            return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+        }
+
+        function setupEventListeners() {
+            // Availability form
+            document.getElementById('availabilityForm').addEventListener('submit', handleAvailabilityUpdate);
+            
+            // Skills form
+            document.getElementById('skillsForm').addEventListener('submit', handleSkillsUpdate);
+            document.getElementById('addSkillBtn').addEventListener('click', addNewSkill);
+            document.getElementById('newSkillInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addNewSkill();
+                }
+            });
+            
+            // Upload certificate
+            const uploadArea = document.getElementById('uploadArea');
+            const certificateInput = document.getElementById('certificateInput');
+            
+            uploadArea.addEventListener('click', () => certificateInput.click());
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--accent-blue)';
+                uploadArea.style.backgroundColor = 'rgba(74, 144, 226, 0.05)';
+            });
+            
+            uploadArea.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '';
+                uploadArea.style.backgroundColor = '';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '';
+                uploadArea.style.backgroundColor = '';
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFileSelect(files[0]);
+                }
+            });
+            
+            certificateInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFileSelect(e.target.files[0]);
+                }
+            });
+            
+            document.getElementById('removeFileBtn').addEventListener('click', clearFileSelection);
+            document.getElementById('uploadCertificateBtn').addEventListener('click', uploadCertificate);
+            
+            // Profile picture
+            document.getElementById('profilePictureInput').addEventListener('change', handleProfilePictureUpload);
+            
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+        }
+
+        function addNewSkill() {
+            const input = document.getElementById('newSkillInput');
+            const skill = input.value.trim();
+            
+            if (skill && !currentSkills.includes(skill)) {
+                currentSkills.push(skill);
+                renderSkills();
+                input.value = '';
+            }
+        }
+
+        function handleAvailabilityUpdate(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const status = formData.get('availability_status');
+            const hours = formData.get('hours_per_week');
+            
+            // TODO: Send to backend API
+            // const response = await fetch('/api/employee/update-availability', { method: 'POST', body: formData });
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Availability status updated successfully.',
+                confirmButtonColor: '#1a1a1a'
+            });
+            
+            updateStatusIndicator(status);
+            document.getElementById('availableHours').textContent = hours;
+        }
+
+        function handleSkillsUpdate(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            formData.append('skills', JSON.stringify(currentSkills));
+            
+            // TODO: Send to backend API
+            // const response = await fetch('/api/employee/update-skills', { method: 'POST', body: formData });
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Skills information updated successfully.',
+                confirmButtonColor: '#1a1a1a'
+            });
+        }
+
+        function handleFileSelect(file) {
+            // Validate file
+            const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            
+            if (!validTypes.includes(file.type)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid File Type',
+                    text: 'Please upload a JPG, PNG, or PDF file.',
+                    confirmButtonColor: '#1a1a1a'
+                });
+                return;
+            }
+            
+            if (file.size > maxSize) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'File Too Large',
+                    text: 'Please upload a file smaller than 5MB.',
+                    confirmButtonColor: '#1a1a1a'
+                });
+                return;
+            }
+            
+            // Show preview
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+            document.getElementById('uploadPreview').style.display = 'block';
+            document.getElementById('uploadArea').style.display = 'none';
+        }
+
+        function clearFileSelection() {
+            document.getElementById('certificateInput').value = '';
+            document.getElementById('uploadPreview').style.display = 'none';
+            document.getElementById('uploadArea').style.display = 'block';
+        }
+
+        async function uploadCertificate() {
+            const fileInput = document.getElementById('certificateInput');
+            if (!fileInput.files[0]) return;
+            
+            const formData = new FormData();
+            formData.append('certificate', fileInput.files[0]);
+            
+            // Show processing status
+            document.getElementById('uploadPreview').style.display = 'none';
+            document.getElementById('processingStatus').style.display = 'block';
+            
+            // TODO: Send to backend API for OCR/NLP processing
+            // const response = await fetch('/api/employee/upload-certificate', { method: 'POST', body: formData });
+            
+            // Simulate processing delay
+            setTimeout(() => {
+                document.getElementById('processingStatus').style.display = 'none';
+                document.getElementById('uploadArea').style.display = 'block';
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Certificate Uploaded!',
+                    html: `
+                        <p>Your certificate has been processed successfully.</p>
+                        <p style="margin-top: 10px;"><strong>Extracted Information:</strong></p>
+                        <p style="font-size: 14px; color: #666;">New skills and certifications have been added to your profile.</p>
+                    `,
+                    confirmButtonColor: '#1a1a1a'
+                }).then(() => {
+                    location.reload();
+                });
+            }, 3000);
+        }
+
+        function handleProfilePictureUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            // Validate
+            if (!file.type.startsWith('image/')) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid File',
+                    text: 'Please select an image file.',
+                    confirmButtonColor: '#1a1a1a'
+                });
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'File Too Large',
+                    text: 'Please select an image smaller than 5MB.',
+                    confirmButtonColor: '#1a1a1a'
+                });
+                return;
+            }
+            
+            // Preview image
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profileAvatarLarge').innerHTML = `<img src="${e.target.result}" alt="Profile">`;
+            };
+            reader.readAsDataURL(file);
+            
+            // TODO: Upload to server
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Profile picture updated successfully.',
+                confirmButtonColor: '#1a1a1a'
+            });
+        }
+
+        function handleLogout() {
+            Swal.fire({
+                title: 'Logout',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#1a1a1a',
+                cancelButtonColor: '#d9534f',
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // TODO: Call backend logout API
+                    console.log('Logout successful');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
