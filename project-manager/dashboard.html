@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - Project Manager | Resource Management System</title>
+
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+  <div class="dashboard-container">
+
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>RMS - PM</h2>
+        <p>John Doe</p>
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="dashboard.html" class="menu-item active">
+          <i class="fas fa-gauge"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="my-projects.html" class="menu-item">
+          <i class="fas fa-project-diagram"></i>
+          <span>My Projects</span>
+        </a>
+        <a href="profile.html" class="menu-item">
+          <i class="fas fa-user"></i>
+          <span>Profile</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="logout-btn" onclick="handleLogout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="content-header">
+        <h1>Dashboard</h1>
+        <p class="breadcrumb">Home / Dashboard</p>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div class="dashboard-grid">
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <h3>Active Projects</h3>
+            <div class="stat-card-icon blue">
+              <i class="fas fa-tasks"></i>
+            </div>
+          </div>
+          <div class="stat-value">0</div>
+          <div class="stat-change positive">
+            <i class="fas fa-arrow-up"></i>
+            <span>Active and running</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <h3>Pending Requests</h3>
+            <div class="stat-card-icon orange">
+              <i class="fas fa-clock"></i>
+            </div>
+          </div>
+          <div class="stat-value">0</div>
+          <div class="stat-change">
+            <i class="fas fa-hourglass-half"></i>
+            <span>Awaiting approval</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <h3>Completed Projects</h3>
+            <div class="stat-card-icon green">
+              <i class="fas fa-check-circle"></i>
+            </div>
+          </div>
+          <div class="stat-value">0</div>
+          <div class="stat-change positive">
+            <i class="fas fa-arrow-up"></i>
+            <span>Successfully finished</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <h3>Total Resources</h3>
+            <div class="stat-card-icon red">
+              <i class="fas fa-users"></i>
+            </div>
+          </div>
+          <div class="stat-value">0</div>
+          <div class="stat-change">
+            <i class="fas fa-users"></i>
+            <span>Assigned employees</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending Projects Section -->
+      <div class="content-card">
+        <div class="card-header">
+          <h2>Pending Project Requests</h2>
+          <!-- Removed the + New Project button from Dashboard -->
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Project Name</th>
+                <th>Resources Needed</th>
+                <th>Start Date</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="pendingProjectsBody">
+              <tr>
+                <td><strong>—</strong></td>
+                <td>—</td>
+                <td>—</td>
+                <td><span class="badge badge-secondary">—</span></td>
+                <td><span class="badge badge-warning">Pending</span></td>
+                <td>
+                  <button class="btn btn-sm btn-secondary" disabled>
+                    <i class="fas fa-eye"></i> View
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../project-manager/assets/js/dashboard.js"></script>
+</body>
+</html>
