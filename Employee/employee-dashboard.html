@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Employee | Resource Management System</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>RMS - EMPLOYEE</h2>
+                <p style="color: rgba(255, 255, 255, 0.7); font-size: 14px; margin-top: 5px;" id="sidebarUserName">Anna Cruz</p>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="employee-dashboard.html" class="menu-item active">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="employee-project-history.html" class="menu-item">
+                    <i class="fas fa-history"></i>
+                    <span>Project History</span>
+                </a>
+                <a href="employee-profile.html" class="menu-item">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1>Dashboard</h1>
+                <p class="breadcrumb">Home / Dashboard</p>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <h3 class="stat-title">Active Projects</h3>
+                        </div>
+                        <div class="stat-icon blue">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="activeProjectsCount">0</div>
+                    <p class="stat-subtitle">
+                        <i class="fas fa-tasks"></i>
+                        Currently assigned
+                    </p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <h3 class="stat-title">Completed Projects</h3>
+                        </div>
+                        <div class="stat-icon green">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="completedProjectsCount">0</div>
+                    <p class="stat-subtitle">
+                        <i class="fas fa-arrow-up"></i>
+                        Total completed
+                    </p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <h3 class="stat-title">Current Status</h3>
+                        </div>
+                        <div class="stat-icon" id="statusIcon">
+                            <i class="fas fa-signal"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" style="font-size: 20px;" id="currentStatus">Available</div>
+                    <p class="stat-subtitle">
+                        <i class="fas fa-info-circle"></i>
+                        Your availability
+                    </p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <h3 class="stat-title">Available Hours</h3>
+                        </div>
+                        <div class="stat-icon orange">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">
+                        <span id="availableHours">40</span>
+                        <span style="font-size: 16px;">/week</span>
+                    </div>
+                    <p class="stat-subtitle">
+                        <i class="fas fa-calendar-week"></i>
+                        Weekly capacity
+                    </p>
+                </div>
+            </div>
+
+            <!-- Current Active Projects -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2 class="card-title">Current Active Projects</h2>
+                </div>
+                
+                <div id="activeProjectsContainer">
+                    <!-- Will be populated by JS -->
+                </div>
+            </div>
+
+            <!-- Skills Summary -->
+            <div class="content-card">
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 15px;">Your Skills</h3>
+                <div class="skills-container" id="skillsContainer">
+                    <!-- Will be populated by JS -->
+                </div>
+                <a href="employee-profile.html" class="btn btn-sm btn-secondary mt-2">
+                    <i class="fas fa-plus"></i> Manage Skills
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Mock data - Replace with actual API calls
+        const mockEmployeeData = {
+            name: "Anna Cruz",
+            role: "Senior Software Developer",
+            department: "IT Department",
+            activeProjects: 5,
+            completedProjects: 12,
+            status: "Available", // Available, Busy, On Leave
+            availableHours: 40,
+            skills: ["JavaScript", "PHP", "Python", "React", "Node.js", "SQL"]
+        };
+
+        const mockActiveProjects = [
+            {
+                id: 1,
+                name: "E-Commerce Platform Migration",
+                manager: "John Smith",
+                role: "Lead Developer",
+                startDate: "2025-01-15",
+                priority: "High",
+                status: "Active"
+            },
+            {
+                id: 2,
+                name: "Customer Portal Redesign",
+                manager: "Maria Garcia",
+                role: "Frontend Developer",
+                startDate: "2025-02-01",
+                priority: "Medium",
+                status: "Active"
+            },
+            {
+                id: 3,
+                name: "API Integration Project",
+                manager: "David Lee",
+                role: "Backend Developer",
+                startDate: "2025-02-10",
+                priority: "Critical",
+                status: "Active"
+            }
+        ];
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboardData();
+            loadActiveProjects();
+            setupEventListeners();
+        });
+
+        function loadDashboardData() {
+            // Update sidebar user name
+            document.getElementById('sidebarUserName').textContent = mockEmployeeData.name;
+            
+            // Update stats
+            document.getElementById('activeProjectsCount').textContent = mockEmployeeData.activeProjects;
+            document.getElementById('completedProjectsCount').textContent = mockEmployeeData.completedProjects;
+            document.getElementById('currentStatus').textContent = mockEmployeeData.status;
+            document.getElementById('availableHours').textContent = mockEmployeeData.availableHours;
+            
+            // Update status icon color
+            const statusIcon = document.getElementById('statusIcon');
+            statusIcon.classList.remove('blue', 'green', 'orange', 'red');
+            if (mockEmployeeData.status === 'Available') {
+                statusIcon.classList.add('green');
+            } else if (mockEmployeeData.status === 'Busy') {
+                statusIcon.classList.add('orange');
+            } else {
+                statusIcon.classList.add('red');
+            }
+            
+            // Load skills
+            loadSkills();
+        }
+
+        function loadActiveProjects() {
+            const container = document.getElementById('activeProjectsContainer');
+            
+            if (mockActiveProjects.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-inbox"></i>
+                        </div>
+                        <p class="empty-text">You are not currently assigned to any active projects.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const tableHTML = `
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Project Manager</th>
+                                <th>Your Role</th>
+                                <th>Start Date</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${mockActiveProjects.map(project => `
+                                <tr>
+                                    <td><strong>${project.name}</strong></td>
+                                    <td>${project.manager}</td>
+                                    <td>${project.role}</td>
+                                    <td>${formatDate(project.startDate)}</td>
+                                    <td><span class="badge badge-${getPriorityClass(project.priority)}">${project.priority}</span></td>
+                                    <td><span class="badge badge-success">${project.status}</span></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            container.innerHTML = tableHTML;
+        }
+
+        function loadSkills() {
+            const container = document.getElementById('skillsContainer');
+            
+            if (mockEmployeeData.skills.length === 0) {
+                container.innerHTML = '<p style="color: var(--dark-gray); margin: 0;">No skills added yet.</p>';
+                return;
+            }
+            
+            container.innerHTML = mockEmployeeData.skills.map(skill => 
+                `<span class="badge badge-info" style="font-size: 13px; padding: 8px 12px;">${skill}</span>`
+            ).join('');
+        }
+
+        function getPriorityClass(priority) {
+            const classes = {
+                'Critical': 'danger',
+                'High': 'warning',
+                'Medium': 'info',
+                'Low': 'secondary'
+            };
+            return classes[priority] || 'secondary';
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+        }
+
+        function setupEventListeners() {
+            // Logout button
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+        }
+
+        function handleLogout() {
+            Swal.fire({
+                title: 'Logout',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#1a1a1a',
+                cancelButtonColor: '#d9534f',
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // TODO: Call backend logout API
+                    // window.location.href = '/api/logout';
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Logged Out',
+                        text: 'You have been successfully logged out.',
+                        confirmButtonColor: '#1a1a1a'
+                    }).then(() => {
+                        // Redirect to login page
+                        // window.location.href = '/login.html';
+                        console.log('Logout successful');
+                    });
+                }
+            });
+        }
+
+        // TODO: Replace mock data with actual API calls
+        // Example API integration:
+        /*
+        async function fetchDashboardData() {
+            try {
+                const response = await fetch('/api/employee/dashboard');
+                const data = await response.json();
+                // Update UI with real data
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+            }
+        }
+        */
+    </script>
+</body>
+</html>
