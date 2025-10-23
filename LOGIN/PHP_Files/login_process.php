@@ -25,10 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $result['redirect'] = '../../project-manager/pm-dashboard.html';
                 break;
             case 'employee':
-                $result['redirect'] = '../EMPLOYEE/Employee_Dashboard/HTML_Files/employee_dashboard.html';
+                $result['redirect'] = '/reso-management-system/employee/employee-dashboard.html';
                 break;
-            case 'admin':
-                $result['redirect'] = '../ADMIN/Admin_Dashboard/HTML_Files/admin_dashboard.html';
+            case 'hr_admin':
+                $result['redirect'] = '/reso-management-system/hr/hr-dashboard.html';
                 break;
             default:
                 $result['redirect'] = '../HTML_Files/default_dashboard.html';
