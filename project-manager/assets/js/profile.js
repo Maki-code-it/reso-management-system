@@ -15,31 +15,42 @@ document.addEventListener('click', function (e) {
 /* ---------- Profile Data ---------- */
 let profile = { details: {}, skills: [] };
 
-/* ---------- Fetch profile from server ---------- */
-async function loadProfile() {
-  try {
-      const res = await fetch('./assets/php/profile.php?action=load', {
-          credentials: 'same-origin'
-      });
+/* ---------- Fetch profile from server ---------- */async function loadProfile() {
+  // Show loading
+  Swal.fire({
+    title: 'Loading profile...',
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
+});
 
-      if (res.status === 401) {
-          Swal.fire({
-              icon: 'error',
-              title: 'Unauthorized',
-              text: 'You must log in first.',
-              confirmButtonColor: '#1a1a1a'
-          }).then(() => window.location.href = '../login.php');
-          return;
-      }
+try {
+    const res = await fetch('./assets/php/profile.php?action=load', {
+        credentials: 'same-origin'
+    });
 
-      const data = await res.json();
-      profile = data.details ? data : { details: {}, skills: [] };
-      render();
-  } catch (err) {
-      console.error(err);
-      Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to load profile.' });
-  }
+    if (res.status === 401) {
+        Swal.close();
+        Swal.fire({
+            icon: 'error',
+            title: 'Unauthorized',
+            text: 'You must log in first.',
+            confirmButtonColor: '#1a1a1a'
+        }).then(() => window.location.href = '../login.php');
+        return;
+    }
+
+    const data = await res.json();
+    profile = data.details ? data : { details: {}, skills: [] };
+    render();
+
+    Swal.close(); // close loading
+} catch (err) {
+    Swal.close();
+    console.error(err);
+    Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to load profile.' });
 }
+}
+
 
 
 /* ---------- Render helpers ---------- */
