@@ -166,23 +166,36 @@ function closeSkillsModal(){ document.getElementById('skillsModal').classList.re
 
 async function addSkill() {
   const inp = document.getElementById('skillInput');
-  const val = (inp.value||'').trim();
-  if(!val) return;
-  if(profile.skills.some(s=>s.toLowerCase()===val.toLowerCase())) {
-      Swal.fire({icon:'info',title:'Duplicate',text:'That skill already exists.',confirmButtonColor:'#1a1a1a'}); 
-      return;
+  const val = (inp.value || '').trim();
+  if (!val) return;
+
+  // 🩹 Safely handle duplicates even if skills aren't strings
+  const valLower = val.toLowerCase();
+  if (profile.skills.some(s => String(s).toLowerCase() === valLower)) {
+    Swal.fire({
+      icon: 'info',
+      title: 'Duplicate',
+      text: 'That skill already exists.',
+      confirmButtonColor: '#1a1a1a'
+    });
+    return;
   }
+
   try {
-      await fetch('./assets/php/profile.php?action=add_skill', { 
-          method:'POST', 
-          headers:{'Content-Type':'application/json'}, 
-          credentials: 'same-origin',
-          body:JSON.stringify({skill:val}) 
-      });
-      inp.value='';
-      await loadProfile();
-  } catch(err){ console.error(err); }
+    await fetch('./assets/php/profile.php?action=add_skill', { 
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' }, 
+      credentials: 'same-origin',
+      body: JSON.stringify({ skill: val }) 
+    });
+
+    inp.value = '';
+    await loadProfile();
+  } catch (err) {
+    console.error(err);
+  }
 }
+
 
 async function removeSkill(skillId) {
   try {

@@ -1,0 +1,13 @@
+# Ignore environment variables
+.env
+
+# Ignore Composer dependencies (you can reinstall them anytime with composer install)
+vendor/
+
+# Ignore system and temporary files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE/editor settings
+.vscode/
+.idea/
