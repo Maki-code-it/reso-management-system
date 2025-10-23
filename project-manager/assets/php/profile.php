@@ -22,23 +22,42 @@ switch($action) {
         // Get user_details
         $details = $db->get('user_details', "user_id=eq.$userId");
         
-        // Get main user info (name, email) from users table
+        // Get main user info (name, email)
         $user = $db->get('users', "id=eq.$userId");
-        $user = $user[0] ?? [];
+        $user = is_array($user) && isset($user[0]) ? $user[0] : [];
     
-        // Merge name and email into details
-        $detailsRow = $details[0] ?? [];
+        // Merge name/email
+        $detailsRow = is_array($details) && isset($details[0]) ? $details[0] : [];
         $detailsRow['name'] = $user['name'] ?? '';
         $detailsRow['email'] = $user['email'] ?? '';
     
         // Get skills
         $skills = $db->get('user_skills', "user_id=eq.$userId");
     
+        // Normalize skills safely
+        $skillsArray = [];
+        if (is_array($skills)) {
+            foreach ($skills as $s) {
+                if (is_array($s)) {
+                    $skillsArray[] = [
+                        'id' => $s['id'] ?? null,
+                        'skill' => $s['skills'] ?? ''
+                    ];
+                } elseif (is_string($s)) {
+                    // In case $db->get returns plain skill strings
+                    $skillsArray[] = [
+                        'id' => null,
+                        'skill' => $s
+                    ];
+                }
+            }
+        }
+    
         echo json_encode([
             'details' => $detailsRow,
-            'skills' => array_map(fn($s) => ['id'=>$s['id'], 'skill'=>$s['skills']], $skills)
+            'skills' => $skillsArray
         ]);
-        break;
+        break;    
     
 
     case 'save_personal':
