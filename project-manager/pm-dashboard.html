@@ -14,19 +14,19 @@
     <aside class="sidebar">
       <div class="sidebar-header">
         <h2>RMS - PM</h2>
-        <p>John Doe</p>
+        <p id="sidebarUser">John Doe</p>
       </div>
 
       <nav class="sidebar-menu">
-        <a href="pm-dashboard.html" class="menu-item active">
-          <i class="fas fa-chart-line"></i>
+        <a href="dashboard.html" class="menu-item active">
+          <i class="fas fa-gauge"></i>
           <span>Dashboard</span>
         </a>
-        <a href="pm-my-projects.html" class="menu-item">
+        <a href="my-projects.html" class="menu-item">
           <i class="fas fa-project-diagram"></i>
           <span>My Projects</span>
         </a>
-        <a href="pm-profile.html" class="menu-item">
+        <a href="profile.html" class="menu-item">
           <i class="fas fa-user"></i>
           <span>Profile</span>
         </a>
@@ -34,7 +34,7 @@
 
       <div class="sidebar-footer">
         <button class="logout-btn" onclick="handleLogout()">
-          <i class="fas fa-right-from-bracket"></i> Logout
+          <i class="fas fa-sign-out-alt"></i> Logout
         </button>
       </div>
     </aside>
@@ -50,9 +50,7 @@
       <div class="dashboard-grid">
         <div class="stat-card">
           <div class="stat-card-header">
-            <div>
-              <h3>Active Projects</h3>
-            </div>
+            <h3>Active Projects</h3>
             <div class="stat-card-icon blue">
               <i class="fas fa-tasks"></i>
             </div>
@@ -66,9 +64,7 @@
 
         <div class="stat-card">
           <div class="stat-card-header">
-            <div>
-              <h3>Pending Requests</h3>
-            </div>
+            <h3>Pending Requests</h3>
             <div class="stat-card-icon orange">
               <i class="fas fa-clock"></i>
             </div>
@@ -82,9 +78,7 @@
 
         <div class="stat-card">
           <div class="stat-card-header">
-            <div>
-              <h3>Completed Projects</h3>
-            </div>
+            <h3>Completed Projects</h3>
             <div class="stat-card-icon green">
               <i class="fas fa-check-circle"></i>
             </div>
@@ -98,9 +92,7 @@
 
         <div class="stat-card">
           <div class="stat-card-header">
-            <div>
-              <h3>Total Resources</h3>
-            </div>
+            <h3>Total Resources</h3>
             <div class="stat-card-icon red">
               <i class="fas fa-users"></i>
             </div>
@@ -117,6 +109,7 @@
       <div class="content-card">
         <div class="card-header">
           <h2>Pending Project Requests</h2>
+          <!-- Removed the + New Project button from Dashboard -->
         </div>
 
         <div class="table-responsive">
@@ -133,9 +126,15 @@
             </thead>
             <tbody id="pendingProjectsBody">
               <tr>
-                <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-gray);">
-                  <i class="fas fa-inbox" style="font-size: 48px; display: block; margin-bottom: 15px; opacity: 0.3;"></i>
-                  <p>No pending project requests</p>
+                <td><strong>—</strong></td>
+                <td>—</td>
+                <td>—</td>
+                <td><span class="badge badge-secondary">—</span></td>
+                <td><span class="badge badge-warning">Pending</span></td>
+                <td>
+                  <button class="btn btn-sm btn-secondary" disabled>
+                    <i class="fas fa-eye"></i> View
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -146,34 +145,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="../../assets/js/main.js"></script>
-  <script>
-    // Always allow sidebar links to navigate
-    document.addEventListener('click', function (e) {
-      const a = e.target.closest('.sidebar .menu-item');
-      if (!a) return;
-      const overlay = document.getElementById('newProjectModal');
-      if (overlay) overlay.classList.remove('active');
-      e.stopImmediatePropagation?.();
-      window.location.href = a.href;
-      e.preventDefault();
-    }, true);
-
-    function handleLogout() {
-      Swal.fire({
-        title: 'Logout',
-        text: 'Are you sure you want to logout?',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#1a1a1a',
-        cancelButtonColor: '#d9534f',
-        confirmButtonText: 'Yes, logout'
-      }).then((r) => {
-        if (r.isConfirmed) {
-          window.location.href = '../../controllers/AuthController.php?action=logout';
-        }
-      });
-    }
-  </script>
+  <script src="../project-manager/assets/js/dashboard.js"></script>
 </body>
 </html>
