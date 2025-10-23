@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Analytics - HR Manager | Resource Management System</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>RMS - HR</h2>
+                <p>HR Manager</p>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="hr-dashboard.html" class="menu-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="hr-project-requests.html" class="menu-item">
+                    <i class="fas fa-inbox"></i>
+                    <span>Project Requests</span>
+                </a>
+                <a href="hr-recommendations.html" class="menu-item">
+                    <i class="fas fa-user-check"></i>
+                    <span>Recommendations</span>
+                </a>
+                <a href="hr-employee-records.html" class="menu-item">
+                    <i class="fas fa-users"></i>
+                    <span>Employee Records</span>
+                </a>
+                <a href="hr-reports.html" class="menu-item active">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports & Analytics</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1>Reports & Analytics</h1>
+                <p class="breadcrumb">Home / Reports & Analytics</p>
+            </div>
+
+            <!-- Key Metrics -->
+            <div class="stats-grid" style="margin-bottom: 30px;">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3 class="stat-title">Total Employees Assigned</h3>
+                        <div class="stat-icon blue">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="totalAssigned">30</div>
+                    <p class="stat-subtitle">
+                        <i class="fas fa-arrow-up" style="color: var(--success-green);"></i>
+                        <span>Currently working on projects</span>
+                    </p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3 class="stat-title">Active Projects</h3>
+                        <div class="stat-icon green">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="activeProjectsCount">12</div>
+                    <p class="stat-subtitle">
+                        <i class="fas fa-tasks"></i>
+                        <span>In progress</span>
+                    </p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3 class="stat-title">Available Employees</h3>
+                        <div class="stat-icon orange">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="availableCount">18</div>
+                    <p class="stat-subtitle">
+                        <i class="fas fa-check-circle" style="color: var(--success-green);"></i>
+                        <span>Ready for assignment</span>
+                    </p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3 class="stat-title">Fully Assigned</h3>
+                        <div class="stat-icon red">
+                            <i class="fas fa-user-clock"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="fullyAssignedCount">12</div>
+                    <p class="stat-subtitle">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>At full capacity</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Charts Row 1 -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px;">
+                <!-- Employee Availability Chart -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Employee Availability</h2>
+                    </div>
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="availabilityChart"></canvas>
+                    </div>
+                    <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div style="text-align: center; padding: 10px; background: var(--light-gray); border-radius: var(--border-radius);">
+                            <div style="font-size: 24px; font-weight: 700; color: var(--success-green);">18</div>
+                            <div style="font-size: 13px; color: var(--dark-gray);">Available</div>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: var(--light-gray); border-radius: var(--border-radius);">
+                            <div style="font-size: 24px; font-weight: 700; color: var(--warning-orange);">15</div>
+                            <div style="font-size: 13px; color: var(--dark-gray);">Partially Assigned</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Distribution Chart -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Project Assignments by Department</h2>
+                    </div>
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="projectChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row 2 -->
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 25px; margin-bottom: 25px;">
+                <!-- Skills Distribution -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Most In-Demand Skills</h2>
+                    </div>
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="skillsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Resource Utilization -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Resource Utilization</h2>
+                    </div>
+                    <div style="padding: 20px 0;">
+                        <div style="margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="font-size: 14px; font-weight: 500;">IT Department</span>
+                                <span style="font-size: 14px; color: var(--dark-gray);">85%</span>
+                            </div>
+                            <div class="progress-bar-container" style="height: 12px;">
+                                <div class="progress-bar" style="width: 85%; background: var(--accent-blue);"></div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="font-size: 14px; font-weight: 500;">Marketing</span>
+                                <span style="font-size: 14px; color: var(--dark-gray);">65%</span>
+                            </div>
+                            <div class="progress-bar-container" style="height: 12px;">
+                                <div class="progress-bar" style="width: 65%; background: var(--success-green);"></div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="font-size: 14px; font-weight: 500;">Sales</span>
+                                <span style="font-size: 14px; color: var(--dark-gray);">45%</span>
+                            </div>
+                            <div class="progress-bar-container" style="height: 12px;">
+                                <div class="progress-bar" style="width: 45%; background: var(--warning-orange);"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="font-size: 14px; font-weight: 500;">Finance</span>
+                                <span style="font-size: 14px; color: var(--dark-gray);">30%</span>
+                            </div>
+                            <div class="progress-bar-container" style="height: 12px;">
+                                <div class="progress-bar" style="width: 30%; background: var(--danger-red);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Trends -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2 class="card-title">Employee Assignment Trends (6 Months)</h2>
+                </div>
+                <div style="position: relative; height: 300px;">
+                    <canvas id="trendsChart"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Initialize charts when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            setupEventListeners();
+        });
+
+        function initializeCharts() {
+            // Employee Availability Pie Chart
+            const availabilityCtx = document.getElementById('availabilityChart').getContext('2d');
+            new Chart(availabilityCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Available', 'Partially Assigned', 'Fully Assigned', 'On Leave'],
+                    datasets: [{
+                        data: [18, 15, 12, 3],
+                        backgroundColor: [
+                            'rgba(92, 184, 92, 0.8)',
+                            'rgba(240, 173, 78, 0.8)',
+                            'rgba(74, 144, 226, 0.8)',
+                            'rgba(217, 83, 79, 0.8)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Project Distribution Bar Chart
+            const projectCtx = document.getElementById('projectChart').getContext('2d');
+            new Chart(projectCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['IT Dept', 'Marketing', 'Sales', 'Finance', 'HR'],
+                    datasets: [{
+                        label: 'Active Projects',
+                        data: [7, 2, 1, 1, 1],
+                        backgroundColor: 'rgba(74, 144, 226, 0.8)',
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Skills Distribution Horizontal Bar
+            const skillsCtx = document.getElementById('skillsChart').getContext('2d');
+            new Chart(skillsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['JavaScript', 'Python', 'PHP', 'React', 'SQL', 'Node.js', 'AWS', 'Docker'],
+                    datasets: [{
+                        label: 'Employees with Skill',
+                        data: [28, 22, 20, 18, 25, 15, 12, 10],
+                        backgroundColor: 'rgba(92, 184, 92, 0.8)',
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Trends Line Chart
+            const trendsCtx = document.getElementById('trendsChart').getContext('2d');
+            new Chart(trendsCtx, {
+                type: 'line',
+                data: {
+                    labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                    datasets: [
+                        {
+                            label: 'Assigned',
+                            data: [22, 25, 28, 30, 32, 30],
+                            borderColor: 'rgba(74, 144, 226, 1)',
+                            backgroundColor: 'rgba(74, 144, 226, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Available',
+                            data: [26, 23, 20, 18, 16, 18],
+                            borderColor: 'rgba(92, 184, 92, 1)',
+                            backgroundColor: 'rgba(92, 184, 92, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function setupEventListeners() {
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+        }
+
+        function handleLogout() {
+            Swal.fire({
+                title: 'Logout',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#1a1a1a',
+                cancelButtonColor: '#d9534f',
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // TODO: Call backend logout API
+                    console.log('Logout successful');
+                }
+            });
+        }
+
+        // TODO: Replace with actual API calls
+        /*
+        async function fetchAnalytics() {
+            try {
+                const response = await fetch('/api/hr/analytics');
+                const data = await response.json();
+                // Update charts with real data
+            } catch (error) {
+                console.error('Error fetching analytics:', error);
+            }
+        }
+        */
+    </script>
+</body>
+</html>

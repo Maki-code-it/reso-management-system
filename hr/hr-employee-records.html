@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Records - HR Manager | Resource Management System</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>RMS - HR</h2>
+                <p>HR Manager</p>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="hr-dashboard.html" class="menu-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="hr-project-requests.html" class="menu-item">
+                    <i class="fas fa-inbox"></i>
+                    <span>Project Requests</span>
+                </a>
+                <a href="hr-recommendations.html" class="menu-item">
+                    <i class="fas fa-user-check"></i>
+                    <span>Recommendations</span>
+                </a>
+                <a href="hr-employee-records.html" class="menu-item active">
+                    <i class="fas fa-users"></i>
+                    <span>Employee Records</span>
+                </a>
+                <a href="hr-reports.html" class="menu-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports & Analytics</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1>Employee Records</h1>
+                <p class="breadcrumb">Home / Employee Records</p>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="content-card">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Filter by Department</label>
+                        <select class="form-control" id="filterDepartment">
+                            <option value="all">All Departments</option>
+                            <option value="IT Department">IT Department</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Sales">Sales</option>
+                            <option value="HR">HR</option>
+                            <option value="Finance">Finance</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Filter by Availability</label>
+                        <select class="form-control" id="filterAvailability">
+                            <option value="all">All Status</option>
+                            <option value="Available">Available</option>
+                            <option value="Busy">Busy</option>
+                            <option value="On Leave">On Leave</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Search Employee</label>
+                        <div class="search-container" style="margin-bottom: 0;">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" class="form-control search-input" id="searchEmployee" placeholder="Search by name or skills...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Employee List -->
+            <div id="employeeContainer">
+                <!-- Will be populated by JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- View Profile Modal -->
+    <div class="modal-overlay" id="viewProfileModal">
+        <div class="modal" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3>Employee Profile</h3>
+                <button class="modal-close" onclick="closeProfileModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="profileModalContent">
+                <!-- Will be populated by JS -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeProfileModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Mock employee data
+        const mockEmployees = [
+            {
+                id: 1,
+                name: "Anna Cruz",
+                position: "Senior Software Developer",
+                department: "IT Department",
+                email: "anna.cruz@company.com",
+                phone: "+63 912 345 6789",
+                availability: "Available",
+                availableHours: 40,
+                skills: ["JavaScript", "PHP", "Python", "React", "Node.js", "SQL"],
+                certifications: [
+                    "AWS Certified Solutions Architect",
+                    "Google Cloud Professional",
+                    "Microsoft Azure Fundamentals"
+                ],
+                projectHistory: [
+                    { name: "E-Commerce Platform", role: "Lead Developer", year: "2024" },
+                    { name: "Mobile App Development", role: "Full Stack Developer", year: "2023" },
+                    { name: "Data Analytics Dashboard", role: "Backend Developer", year: "2023" }
+                ],
+                joinDate: "2020-01-15",
+                employeeId: "EMP-001"
+            },
+            {
+                id: 2,
+                name: "John Smith",
+                position: "Project Manager",
+                department: "IT Department",
+                email: "john.smith@company.com",
+                phone: "+63 923 456 7890",
+                availability: "Busy",
+                availableHours: 10,
+                skills: ["Agile", "Scrum", "Project Planning", "Risk Management", "Stakeholder Management"],
+                certifications: [
+                    "PMP Certified",
+                    "Scrum Master Certification"
+                ],
+                projectHistory: [
+                    { name: "Website Redesign", role: "Project Manager", year: "2024" },
+                    { name: "CRM Implementation", role: "Project Manager", year: "2023" }
+                ],
+                joinDate: "2019-03-20",
+                employeeId: "EMP-002"
+            },
+            {
+                id: 3,
+                name: "Maria Garcia",
+                position: "UI/UX Designer",
+                department: "Marketing",
+                email: "maria.garcia@company.com",
+                phone: "+63 934 567 8901",
+                availability: "Available",
+                availableHours: 40,
+                skills: ["Figma", "Adobe XD", "UI Design", "UX Research", "Prototyping", "Wireframing"],
+                certifications: [
+                    "Google UX Design Certificate",
+                    "Adobe Certified Expert"
+                ],
+                projectHistory: [
+                    { name: "Mobile App UI", role: "Lead Designer", year: "2024" },
+                    { name: "Website Redesign", role: "UI Designer", year: "2023" }
+                ],
+                joinDate: "2021-06-10",
+                employeeId: "EMP-003"
+            },
+            {
+                id: 4,
+                name: "David Lee",
+                position: "Data Analyst",
+                department: "IT Department",
+                email: "david.lee@company.com",
+                phone: "+63 945 678 9012",
+                availability: "On Leave",
+                availableHours: 0,
+                skills: ["Python", "SQL", "Power BI", "Data Visualization", "Excel", "Statistics"],
+                certifications: [
+                    "Microsoft Certified: Data Analyst Associate",
+                    "Tableau Desktop Specialist"
+                ],
+                projectHistory: [
+                    { name: "Sales Analytics Dashboard", role: "Data Analyst", year: "2024" },
+                    { name: "Customer Insights Report", role: "Senior Analyst", year: "2023" }
+                ],
+                joinDate: "2020-09-01",
+                employeeId: "EMP-004"
+            },
+            {
+                id: 5,
+                name: "Sarah Johnson",
+                position: "Full Stack Developer",
+                department: "IT Department",
+                email: "sarah.johnson@company.com",
+                phone: "+63 956 789 0123",
+                availability: "Available",
+                availableHours: 40,
+                skills: ["React", "Node.js", "MongoDB", "Express", "TypeScript", "Docker"],
+                certifications: [
+                    "MongoDB Certified Developer",
+                    "AWS Certified Developer"
+                ],
+                projectHistory: [
+                    { name: "API Development", role: "Backend Developer", year: "2024" },
+                    { name: "Web Application", role: "Full Stack Developer", year: "2023" }
+                ],
+                joinDate: "2021-02-15",
+                employeeId: "EMP-005"
+            }
+        ];
+
+        let filteredEmployees = [...mockEmployees];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderEmployees();
+            setupEventListeners();
+        });
+
+        function renderEmployees() {
+            const container = document.getElementById('employeeContainer');
+            
+            if (filteredEmployees.length === 0) {
+                container.innerHTML = `
+                    <div class="content-card">
+                        <div class="empty-state">
+                            <div class="empty-icon"><i class="fas fa-users"></i></div>
+                            <p class="empty-text">No employees found matching your filters</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredEmployees.map(employee => {
+                const availabilityClass = employee.availability === 'Available' ? 'success' :
+                                        (employee.availability === 'Busy' ? 'warning' : 'danger');
+                
+                return `
+                    <div class="employee-card">
+                        <div class="employee-header">
+                            <div class="employee-info">
+                                <h3>${employee.name}</h3>
+                                <p class="employee-role">${employee.position}</p>
+                                <div style="display: flex; gap: 10px; margin-top: 8px;">
+                                    <span class="badge badge-${availabilityClass}">${employee.availability}</span>
+                                    <span class="badge badge-secondary">${employee.department}</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="viewProfile(${employee.id})">
+                                <i class="fas fa-eye"></i> View Profile
+                            </button>
+                        </div>
+                        
+                        <div style="margin-top: 15px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 14px; color: var(--dark-gray);">
+                            <div><i class="fas fa-envelope"></i> ${employee.email}</div>
+                            <div><i class="fas fa-phone"></i> ${employee.phone}</div>
+                            <div><i class="fas fa-clock"></i> ${employee.availableHours} hrs/week</div>
+                        </div>
+
+                        <div class="skills-container">
+                            ${employee.skills.slice(0, 5).map(skill => 
+                                `<span class="skill-tag">${skill}</span>`
+                            ).join('')}
+                            ${employee.skills.length > 5 ? `<span class="skill-tag">+${employee.skills.length - 5} more</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function viewProfile(id) {
+            const employee = mockEmployees.find(e => e.id === id);
+            if (!employee) return;
+
+            const availabilityClass = employee.availability === 'Available' ? 'success' :
+                                    (employee.availability === 'Busy' ? 'warning' : 'danger');
+
+            const modalContent = document.getElementById('profileModalContent');
+            modalContent.innerHTML = `
+                <div style="margin-bottom: 25px;">
+                    <h2 style="margin-bottom: 8px;">${employee.name}</h2>
+                    <p style="color: var(--dark-gray); font-size: 16px; margin-bottom: 12px;">${employee.position}</p>
+                    <div style="display: flex; gap: 10px;">
+                        <span class="badge badge-${availabilityClass}">${employee.availability}</span>
+                        <span class="badge badge-info">${employee.department}</span>
+                    </div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Employee ID</div>
+                        <div class="info-value">${employee.employeeId}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Join Date</div>
+                        <div class="info-value">${formatDate(employee.joinDate)}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Email</div>
+                        <div class="info-value">${employee.email}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Phone</div>
+                        <div class="info-value">${employee.phone}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Available Hours</div>
+                        <div class="info-value">${employee.availableHours} hrs/week</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 25px;">
+                    <h4 style="font-size: 16px; margin-bottom: 12px; color: var(--primary-black);">Skills</h4>
+                    <div class="skills-container">
+                        ${employee.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+                    </div>
+                </div>
+
+                <div style="margin-top: 25px;">
+                    <h4 style="font-size: 16px; margin-bottom: 12px; color: var(--primary-black);">Certifications</h4>
+                    ${employee.certifications.map(cert => `
+                        <div style="padding: 10px; background: var(--light-gray); border-radius: var(--border-radius); margin-bottom: 8px;">
+                            <i class="fas fa-certificate" style="color: var(--accent-blue); margin-right: 8px;"></i>
+                            ${cert}
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div style="margin-top: 25px;">
+                    <h4 style="font-size: 16px; margin-bottom: 12px; color: var(--primary-black);">Project History</h4>
+                    ${employee.projectHistory.map(project => `
+                        <div style="padding: 12px; background: var(--light-gray); border-radius: var(--border-radius); margin-bottom: 10px;">
+                            <div style="font-weight: 600; margin-bottom: 4px;">${project.name}</div>
+                            <div style="font-size: 13px; color: var(--dark-gray);">
+                                <span>${project.role}</span>
+                                <span style="margin: 0 8px;">•</span>
+                                <span>${project.year}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            document.getElementById('viewProfileModal').classList.add('active');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('viewProfileModal').classList.remove('active');
+        }
+
+        function applyFilters() {
+            const departmentFilter = document.getElementById('filterDepartment').value;
+            const availabilityFilter = document.getElementById('filterAvailability').value;
+            const searchTerm = document.getElementById('searchEmployee').value.toLowerCase();
+
+            filteredEmployees = mockEmployees.filter(employee => {
+                const matchesDepartment = departmentFilter === 'all' || employee.department === departmentFilter;
+                const matchesAvailability = availabilityFilter === 'all' || employee.availability === availabilityFilter;
+                const matchesSearch = employee.name.toLowerCase().includes(searchTerm) ||
+                                    employee.position.toLowerCase().includes(searchTerm) ||
+                                    employee.skills.some(skill => skill.toLowerCase().includes(searchTerm));
+                
+                return matchesDepartment && matchesAvailability && matchesSearch;
+            });
+
+            renderEmployees();
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+        }
+
+        function setupEventListeners() {
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+            document.getElementById('filterDepartment').addEventListener('change', applyFilters);
+            document.getElementById('filterAvailability').addEventListener('change', applyFilters);
+            document.getElementById('searchEmployee').addEventListener('input', applyFilters);
+            
+            // Close modal on overlay click
+            document.getElementById('viewProfileModal').addEventListener('click', function(e) {
+                if (e.target === this) closeProfileModal();
+            });
+        }
+
+        function handleLogout() {
+            Swal.fire({
+                title: 'Logout',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#1a1a1a',
+                cancelButtonColor: '#d9534f',
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // TODO: Call backend logout API
+                    console.log('Logout successful');
+                }
+            });
+        }
+
+        // TODO: Replace with actual API calls
+        /*
+        async function fetchEmployees() {
+            try {
+                const response = await fetch('/api/hr/employees');
+                const data = await response.json();
+                mockEmployees = data;
+                applyFilters();
+            } catch (error) {
+                console.error('Error fetching employees:', error);
+            }
+        }
+        */
+    </script>
+</body>
+</html>

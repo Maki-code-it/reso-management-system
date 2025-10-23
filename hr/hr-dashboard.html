@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - HR Manager | Resource Management System</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>RMS - HR</h2>
+                <p id="sidebarUserName">HR Manager</p>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="hr-dashboard.html" class="menu-item active">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="hr-project-requests.html" class="menu-item">
+                    <i class="fas fa-inbox"></i>
+                    <span>Project Requests</span>
+                </a>
+                <a href="hr-recommendations.html" class="menu-item">
+                    <i class="fas fa-user-check"></i>
+                    <span>Recommendations</span>
+                </a>
+                <a href="hr-employee-records.html" class="menu-item">
+                    <i class="fas fa-users"></i>
+                    <span>Employee Records</span>
+                </a>
+                <a href="hr-reports.html" class="menu-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports & Analytics</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h1>Dashboard Overview</h1>
+                <p class="breadcrumb">Home / Dashboard</p>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3 class="stat-title">Total Employees</h3>
+                        <div class="stat-icon blue">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="totalEmployees">0</div>
+                    <p class="stat-subtitle">
+                        <i class="fas fa-building"></i>
+                        Across all departments
+                    </p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3 class="stat-title">Active Projects</h3>
+                        <div class="stat-icon green">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="activeProjects">0</div>
+                    <p class="stat-subtitle">
+                        <i class="fas fa-tasks"></i>
+                        Currently running
+                    </p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3 class="stat-title">Available Employees</h3>
+                        <div class="stat-icon orange">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="availableEmployees">0</div>
+                    <p class="stat-subtitle">
+                        <i class="fas fa-circle" style="color: var(--success-green);"></i>
+                        Ready for assignment
+                    </p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3 class="stat-title">Pending Requests</h3>
+                        <div class="stat-icon red">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value" id="pendingRequests">0</div>
+                    <p class="stat-subtitle">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Awaiting review
+                    </p>
+                </div>
+            </div>
+
+            <!-- Recent Activity & Workload Overview -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 25px;">
+                <!-- Recent Activity -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Recent Activity</h2>
+                    </div>
+                    <div class="activity-list" id="recentActivity">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Workload Overview -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Workload Distribution</h2>
+                    </div>
+                    <div class="workload-chart" id="workloadChart">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Mock data
+        const mockDashboardData = {
+            totalEmployees: 48,
+            activeProjects: 12,
+            availableEmployees: 18,
+            pendingRequests: 5
+        };
+
+        const mockRecentActivity = [
+            {
+                icon: 'fas fa-user-plus',
+                color: 'blue',
+                text: 'New employee Anna Cruz added to IT Department',
+                time: '2 hours ago'
+            },
+            {
+                icon: 'fas fa-check-circle',
+                color: 'green',
+                text: 'Project request approved: E-Commerce Platform',
+                time: '3 hours ago'
+            },
+            {
+                icon: 'fas fa-certificate',
+                color: 'orange',
+                text: 'Certificate uploaded by John Doe',
+                time: '5 hours ago'
+            },
+            {
+                icon: 'fas fa-project-diagram',
+                color: 'blue',
+                text: 'New project request from Maria Garcia',
+                time: '1 day ago'
+            },
+            {
+                icon: 'fas fa-user-check',
+                color: 'green',
+                text: '3 employees assigned to Mobile App project',
+                time: '2 days ago'
+            }
+        ];
+
+        const mockWorkloadData = [
+            { status: 'Available', count: 18, percentage: 37.5, color: 'var(--success-green)' },
+            { status: 'Partially Assigned', count: 15, percentage: 31.25, color: 'var(--warning-orange)' },
+            { status: 'Fully Assigned', count: 12, percentage: 25, color: 'var(--accent-blue)' },
+            { status: 'On Leave', count: 3, percentage: 6.25, color: 'var(--danger-red)' }
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboardData();
+            loadRecentActivity();
+            loadWorkloadChart();
+            setupEventListeners();
+        });
+
+        function loadDashboardData() {
+            document.getElementById('totalEmployees').textContent = mockDashboardData.totalEmployees;
+            document.getElementById('activeProjects').textContent = mockDashboardData.activeProjects;
+            document.getElementById('availableEmployees').textContent = mockDashboardData.availableEmployees;
+            document.getElementById('pendingRequests').textContent = mockDashboardData.pendingRequests;
+        }
+
+        function loadRecentActivity() {
+            const container = document.getElementById('recentActivity');
+            
+            if (mockRecentActivity.length === 0) {
+                container.innerHTML = '<p style="color: var(--dark-gray); text-align: center; padding: 20px;">No recent activity</p>';
+                return;
+            }
+
+            container.innerHTML = mockRecentActivity.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-icon ${activity.color}">
+                        <i class="${activity.icon}"></i>
+                    </div>
+                    <div class="activity-content">
+                        <p class="activity-text">${activity.text}</p>
+                        <span class="activity-time">${activity.time}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadWorkloadChart() {
+            const container = document.getElementById('workloadChart');
+            
+            const total = mockWorkloadData.reduce((sum, item) => sum + item.count, 0);
+            
+            container.innerHTML = `
+                <div class="workload-bars">
+                    ${mockWorkloadData.map(item => `
+                        <div class="workload-item">
+                            <div class="workload-info">
+                                <span class="workload-label">${item.status}</span>
+                                <span class="workload-count">${item.count} (${item.percentage}%)</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="width: ${item.percentage}%; background-color: ${item.color};"></div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function setupEventListeners() {
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+        }
+
+        function handleLogout() {
+            Swal.fire({
+                title: 'Logout',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#1a1a1a',
+                cancelButtonColor: '#d9534f',
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // TODO: Call backend logout API
+                    console.log('Logout successful');
+                }
+            });
+        }
+
+        // TODO: Replace with actual API calls
+        /*
+        async function fetchDashboardData() {
+            try {
+                const response = await fetch('/api/hr/dashboard');
+                const data = await response.json();
+                // Update UI with real data
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+            }
+        }
+        */
+    </script>
+</body>
+</html>
