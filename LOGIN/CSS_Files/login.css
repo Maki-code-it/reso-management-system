@@ -1,0 +1,220 @@
+/* Reset and Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #595959, #8a8a8a);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Main Container */
+  .login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .login-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    padding: 45px 40px;
+    animation: fadeIn 0.7s ease-out;
+  }
+  
+  /* Logo / Heading Section */
+  .logo-area {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .logo-area h1 {
+    color: #595959;
+    font-size: 32px;
+    font-weight: 600;
+  }
+  
+  .logo-area p {
+    color: #777;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  /* Form Elements */
+  .input-group {
+    margin-bottom: 20px;
+  }
+  
+  .input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #595959;
+    margin-bottom: 6px;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+  
+  .input-group input:focus {
+    border-color: #595959;
+    box-shadow: 0 0 0 3px rgba(89, 89, 89, 0.2);
+    outline: none;
+  }
+  
+  /* Options */
+  .options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 13px;
+  }
+  
+  .options a {
+    color: #595959;
+    text-decoration: none;
+  }
+  
+  .options a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Sign In Button */
+  .login-btn {
+    background-color: #595959;
+    color: white;
+    border: none;
+    padding: 12px 0;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .login-btn:hover {
+    background-color: #404040;
+    transform: translateY(-2px);
+  }
+
+  #sendCodeBtn {
+    background-color: #595959;
+    color: white;
+    border: none;
+    padding: 12px 0;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-top: 18px;
+  }
+  
+  /* Footer */
+  .footer-text {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #777;
+  }
+  
+  .footer-text a {
+    color: #595959;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .footer-text a:hover {
+    text-decoration: underline;
+  }
+
+  /* Prevent form from moving when SweetAlert2 appears */
+html, body {
+    overflow-y: hidden; /* stop scrollbar flicker */
+    height: 100%;
+  }
+  
+  .login-wrapper {
+    position: fixed; /* keep centered and static */
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+  
+  /* SweetAlert2 Custom Theme to match your color */
+  .swal2-popup {
+    border-radius: 16px !important;
+    font-family: "Poppins", sans-serif !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25) !important;
+  }
+  
+  .swal2-title {
+    color: #595959 !important;
+    font-weight: 600 !important;
+  }
+  
+  .swal2-confirm {
+    background-color: #595959 !important;
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    padding: 8px 20px !important;
+  }
+  
+  .swal2-cancel {
+    background-color: #b1b1b1 !important;
+    border-radius: 8px !important;
+  }
+  
+  .swal2-confirm:hover {
+    background-color: #404040 !important;
+  }
+  
+  
+  /* Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 480px) {
+    .login-card {
+      width: 100%;
+      padding: 30px 25px;
+    }
+  
+    .logo-area h1 {
+      font-size: 26px;
+    }
+  
+    .login-btn {
+      font-size: 14px;
+    }
+  }
+  
